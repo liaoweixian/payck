@@ -1,0 +1,26 @@
+server.port: 8080
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/payck?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password: 123456
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        hbm2ddl:
+          auto: update
+        format_sql: true
+    show-sql: true
+
+
+
+#系统监控配置
+control:
+  username: admin
+  password: ck
+  key: 649fb2bdb31d24a43a9e3530dad4cf82
+  close: 5
+  url:
+    notify: http://localhost:8081/callBackOrder
+    return: http://localhost:8081/success.html
