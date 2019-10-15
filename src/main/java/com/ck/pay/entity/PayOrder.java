@@ -51,6 +51,9 @@ public class PayOrder {
     //二维码内容
     private String payUrl;
 
+    //目标用户
+    private Long userId;
+
     public String getPayUrl() {
         return payUrl;
     }
@@ -171,6 +174,14 @@ public class PayOrder {
         this.isAuto = isAuto;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "PayOrder{" +
@@ -186,6 +197,7 @@ public class PayOrder {
                 ", notifyUrl='" + notifyUrl + '\'' +
                 ", returnUrl='" + returnUrl + '\'' +
                 ", state=" + state +
+                ", userId=" + userId +
                 '}';
     }
 }

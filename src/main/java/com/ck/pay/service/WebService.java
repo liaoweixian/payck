@@ -31,7 +31,7 @@ public class WebService {
     @Autowired
     private PayQrcodeDao payQrcodeDao;
 
-    public CommonRes createOrder(String payId, String param, Integer type, String price, String notifyUrl, String returnUrl, String sign) {
+    public CommonRes createOrder(String payId, String param, Integer type, String price, String notifyUrl, String returnUrl, String sign, Long userId) {
         String key = settingDao.findById("key").get().getVvalue();
         String jsSign = HttpRequest.md5(payId + param + type + price + key);
         if (!sign.equals(jsSign)) {
@@ -111,7 +111,7 @@ public class WebService {
         payOrder.setState(0);
         payOrder.setIsAuto(isAuto);
         payOrder.setPayUrl(payUrl);
-
+        payOrder.setUserId(userId);
         payOrderDao.save(payOrder);
 
         String timeOut = settingDao.findById("close").get().getVvalue();

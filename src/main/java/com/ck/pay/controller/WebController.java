@@ -1,5 +1,7 @@
 package com.ck.pay.controller;
 
+import com.ck.pay.dao.AsiaUserDao;
+import com.ck.pay.entity.AsiaUser;
 import com.ck.pay.service.WebService;
 import com.ck.pay.utils.ResUtil;
 import com.google.gson.Gson;
@@ -36,6 +38,9 @@ public class WebController {
 
     @Autowired
     private WebService webService;
+
+    @Autowired
+    private AsiaUserDao asiaUserDao;
 
     @RequestMapping("/enQrcode")
     public void enQrcode(HttpServletResponse resp, String url) throws IOException {
@@ -121,7 +126,7 @@ public class WebController {
      * @return
      */
     @RequestMapping("/createOrder")
-    public String createOrder(String payId, String param, Integer type, String price, String notifyUrl, String returnUrl, String sign, Integer isHtml) {
+    public String createOrder(String payId, String param, Integer type, String price, String notifyUrl, String returnUrl, String sign, Integer isHtml, Long userId) {
         if (payId == null || payId.equals("")) {
             return new Gson().toJson(ResUtil.error("请传入商户订单号"));
         }
@@ -147,6 +152,19 @@ public class WebController {
             return new Gson().toJson(ResUtil.error("订单金额必须大于0"));
         }
 
+        if (null == userId)
+        {
+            return new Gson().toJson(ResUtil.error("用户信息错误"));
+        }
+
+        AsiaUser user = null;
+        try {
+           user = asiaUserDao.findById(userId).get();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Gson().toJson(ResUtil.error("用户信息错误"));
+        }
+
 
         if (sign == null || sign.equals("")) {
             return new Gson().toJson(ResUtil.error("请传入签名"));
@@ -157,7 +175,9 @@ public class WebController {
         if (isHtml == null) {
             isHtml = 0;
         }
-        CommonRes commonRes = webService.createOrder(payId, param, type, price, notifyUrl, returnUrl, sign);
+
+        CommonRes commonRes = webService.createOrder(payId, param, type, price, notifyUrl, returnUrl, sign, user.getId());
+
         if (isHtml == 0) {
             String res = new Gson().toJson(commonRes);
             return res;

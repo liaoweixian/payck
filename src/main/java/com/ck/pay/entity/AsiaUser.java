@@ -7,13 +7,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Entity
 @Table(name = "asia_user")
 @AllArgsConstructor
-public class AsiaUser {
+public class AsiaUser implements Serializable {
 
     @Id
     private Long id;
